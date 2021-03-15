@@ -16,7 +16,6 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
 
         usuario.setNome((String) json.get("nome"));
-        usuario.setRegistroList(new ArrayList<>());
         usuario.setQtdEmprestimo(0);
         usuarios.add(usuario);
 

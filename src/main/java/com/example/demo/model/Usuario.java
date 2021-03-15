@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Usuario {
     private String nome;
-    private List<Emprestimo> emprestimoList;
     private Integer qtdEmprestimo;
 
     public void setNome(String nome) {
@@ -13,14 +12,6 @@ public class Usuario {
 
     public String getNome() {
         return nome;
-    }
-
-    public void setRegistroList(List<Emprestimo> emprestimoList) {
-        this.emprestimoList = emprestimoList;
-    }
-
-    public List<Emprestimo> getRegistroList() {
-        return emprestimoList;
     }
 
     public void setQtdEmprestimo(Integer qtdEmprestimo) {

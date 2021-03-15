@@ -8,18 +8,23 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.LocalDate;
 
 public class Emprestimo {
+    private Usuario usuario;
     private LocalDate dataEmprestimo;
     private Livro livro;
     private LocalDate vencimentoDevolucao;
-
-    private Boolean devolucao = false;
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate diaDevolucao;
-    private Boolean atraso;
+    private Boolean devolucaoEmAtraso;
     private Integer diasEmAtraso;
-    private Float multa;
+    private Float multaAtrado;
+    private Boolean multaPendente;
 
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
     public void setDataEmprestimo(LocalDate dataEmprestimo) {
         this.dataEmprestimo = dataEmprestimo;
@@ -45,17 +50,6 @@ public class Emprestimo {
         return vencimentoDevolucao;
     }
 
-
-
-
-    public void setDevolucao(Boolean devolucao) {
-        this.devolucao = devolucao;
-    }
-
-    public Boolean getDevolucao() {
-        return devolucao;
-    }
-
     public void setDiaDevolucao(LocalDate diaDevolucao) {
         this.diaDevolucao = diaDevolucao;
     }
@@ -64,12 +58,12 @@ public class Emprestimo {
         return diaDevolucao;
     }
 
-    public void setAtraso(Boolean atraso) {
-        this.atraso = atraso;
+    public void setDevolucaoEmAtraso(Boolean devolucaoEmAtraso) {
+        this.devolucaoEmAtraso = devolucaoEmAtraso;
     }
 
-    public Boolean getAtraso() {
-        return atraso;
+    public Boolean getDevolucaoEmAtraso() {
+        return devolucaoEmAtraso;
     }
 
     public void setDiasEmAtraso(Integer diasEmAtraso) {
@@ -80,11 +74,19 @@ public class Emprestimo {
         return diasEmAtraso;
     }
 
-    public void setMulta(Float multa) {
-        this.multa = multa;
+    public void setMultaAtrado(Float multaAtrado) {
+        this.multaAtrado = multaAtrado;
     }
 
-    public Float getMulta() {
-        return multa;
+    public Float getMultaAtrado() {
+        return multaAtrado;
+    }
+
+    public void setMultaPendente(Boolean multaPendente) {
+        this.multaPendente = multaPendente;
+    }
+
+    public Boolean getMultaPendente() {
+        return multaPendente;
     }
 }

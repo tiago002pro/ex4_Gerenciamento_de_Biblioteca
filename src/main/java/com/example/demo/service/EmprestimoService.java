@@ -24,47 +24,84 @@ public class EmprestimoService {
 
     public String registraEmprestimo(Map<String, Object> json) {
         Usuario usuario = usuarioService.usuarios.get((Integer) json.get("idUsuario"));
-        List<Emprestimo> emprestimoRegistrado = usuario.getRegistroList();
         Livro livro = livroService.livros.get((Integer) json.get("idLivro"));
         Emprestimo emprestimo = new Emprestimo();
 
         if (usuario.getQtdEmprestimo() >= 2) {
-            return "Não é possível fazer mais que 2 empréstimos simultâneos!";
+
+            return "Não é possível fazer mais que 2 empréstimos!";
+        } else if (verificaSeExisteAlgumItemEmAtraso(usuario)){
+
+            return "Existe pendências em seu cadastro. Faça a devolução do seu último empréstimo para regularizar.";
+        } else if (verificaSeMultaEstaPendente(usuario)) {
+
+            return "Existe pendências em seu cadastro. Faça a regularização com o financeiro.";
         } else {
+            emprestimo.setUsuario(usuario);
             emprestimo.setLivro(livro);
             emprestimo.setDataEmprestimo(LocalDate.now());
             emprestimo.setVencimentoDevolucao(LocalDate.now().plusDays(10));
-            usuario.setQtdEmprestimo(usuario.getRegistroList().size());
+            emprestimo.setMultaPendente(false);
 
-            emprestimoRegistrado.add(emprestimo);
+            usuario.setQtdEmprestimo(contadorDeEmprestimos(usuario.getQtdEmprestimo()));
             emprestimos.add(emprestimo);
-            usuario.setQtdEmprestimo(usuario.getRegistroList().size());
 
             return "Emprestimo realizado com seucesso!";
         }
-
     }
 
     public List<Emprestimo> getEmprestimos() {
         return emprestimos;
     }
 
+    public Boolean verificaSeExisteAlgumItemEmAtraso(Usuario usuario) {
+        LocalDate dataAtual = LocalDate.now();
+        boolean existeAtraso = false;
+
+        for (int x=0; x<emprestimos.size(); x++) {
+            Emprestimo emprestimo = emprestimos.get(x);
+            if (emprestimo.getUsuario().equals(usuario)) {
+                if (emprestimo.getVencimentoDevolucao().isBefore(dataAtual)) {
+                    existeAtraso = true;
+                }
+            }
+        }
+        return existeAtraso;
+    }
+
+    public Boolean verificaSeMultaEstaPendente(Usuario usuario) {
+        boolean multaPendete = false;
+
+        for (int x=0; x<emprestimos.size(); x++) {
+            Emprestimo emprestimo = emprestimos.get(x);
+            if (emprestimo.getUsuario().equals(usuario)) {
+                if (emprestimo.getMultaPendente()) {
+                    multaPendete = true;
+                }
+            }
+        }
+        return multaPendete;
+    }
+
+    public Integer contadorDeEmprestimos(Integer qtdEmprestimo) {
+        return qtdEmprestimo +1;
+    }
+
     public String devolucaoEmprestimo(Map<String, Object> json) {
         Usuario usuario = usuarioService.usuarios.get((Integer) json.get("idUsuario"));
-        List<Emprestimo> emprestimoRegistrado = usuario.getRegistroList();
         Emprestimo emprestimo = emprestimos.get((Integer) json.get("idEmprestimo"));
 
-        emprestimo.setDevolucao(true);
         emprestimo.setDiaDevolucao(LocalDate.now().plusDays(26));
         emprestimo.setDiasEmAtraso(calcDevolucao(emprestimo.getDiaDevolucao(), emprestimo.getVencimentoDevolucao()));
+        emprestimo.setDevolucaoEmAtraso(verificaAtraso(emprestimo.getDiaDevolucao(), emprestimo.getVencimentoDevolucao()));
+        emprestimo.setMultaAtrado(calMultaAtraso(emprestimo.getDiasEmAtraso()));
+        emprestimo.setMultaPendente(verificaAtraso(emprestimo.getDiaDevolucao(), emprestimo.getVencimentoDevolucao()));
 
-        emprestimo.setAtraso(verificaAtraso(emprestimo.getVencimentoDevolucao(), emprestimo.getDiaDevolucao()));
-        emprestimo.setMulta(calMultaAtraso(emprestimo.getDiasEmAtraso()));
+        usuario.setQtdEmprestimo(baixaDeEmprestimos(usuario.getQtdEmprestimo()));
 
-        emprestimoRegistrado.replaceAll(emprestimo1 -> emprestimo);
+        emprestimos.replaceAll(emprestimo1 -> emprestimo);
 
         return "Devolução recebida!";
-
     }
 
     public Integer calcDevolucao(LocalDate diaDevolucao, LocalDate vencimentoDevolucao) {
@@ -74,21 +111,32 @@ public class EmprestimoService {
 
         if (diaDevolucao.isAfter(vencimentoDevolucao)) {
             diasAtraso = diaDevolucaoInt - diaEntvencimentoDevolucaoInt;
-
             return diasAtraso;
         } else {
-
             return 0;
         }
     }
 
-    public Boolean verificaAtraso(LocalDate dataDevolucao, LocalDate dataLimite) {
-        return (dataDevolucao.isAfter(dataLimite));
+    public Boolean verificaAtraso(LocalDate dataDevolucao, LocalDate vencimentoDevolucao) {
+        return (dataDevolucao.isAfter(vencimentoDevolucao));
     }
 
     public Float calMultaAtraso(Integer diasAtraso) {
         float valorMultaPorDia = 5.00F;
-
         return diasAtraso * valorMultaPorDia;
     }
+
+    public Emprestimo regularizaMulta(Map<String, Object> json) {
+        Emprestimo emprestimo = emprestimos.get((Integer) json.get("idEmprestimo"));
+
+        emprestimo.setMultaPendente(false);
+        emprestimos.replaceAll(emprestimo1 -> emprestimo);
+
+        return emprestimo;
+    }
+
+    public Integer baixaDeEmprestimos(Integer qtdEmprestimo) {
+        return qtdEmprestimo -1;
+    }
+
 }
