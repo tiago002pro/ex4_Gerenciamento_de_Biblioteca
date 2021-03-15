@@ -1,16 +1,8 @@
 package com.example.demo.model;
 
-public class Livro {
-    private String titulo;
+public class Livro extends Banca{
     private String autor;
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
+    private String editora;
 
     public void setAutor(String autor) {
         this.autor = autor;
@@ -20,4 +12,21 @@ public class Livro {
         return autor;
     }
 
+    public void setEditora(String editora) {
+        this.editora = editora;
+    }
+
+    public String getEditora() {
+        return editora;
+    }
+
+    @Override
+    public String getTitulo() {
+        return super.getTitulo();
+    }
+
+    @Override
+    public String getTipo() {
+        return super.getTipo();
+    }
 }

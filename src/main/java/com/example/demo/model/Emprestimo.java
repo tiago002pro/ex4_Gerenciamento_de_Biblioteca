@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class Emprestimo {
     private Usuario usuario;
     private LocalDate dataEmprestimo;
-    private Livro livro;
+    private Banca banca;
     private LocalDate vencimentoDevolucao;
     private LocalDate diaDevolucao;
     private Boolean devolucaoEmAtraso;
@@ -34,12 +34,12 @@ public class Emprestimo {
         return dataEmprestimo;
     }
 
-    public void setLivro(Livro livro) {
-        this.livro = livro;
+    public void setLivro(Banca banca) {
+        this.banca = banca;
     }
 
-    public Livro getLivro() {
-        return livro;
+    public Banca getBanca() {
+        return banca;
     }
 
     public void setVencimentoDevolucao(LocalDate vencimentoDevolucao) {

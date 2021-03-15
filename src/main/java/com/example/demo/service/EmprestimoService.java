@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Banca;
 import com.example.demo.model.Emprestimo;
 import com.example.demo.model.Livro;
 import com.example.demo.model.Usuario;
@@ -18,13 +19,13 @@ public class EmprestimoService {
         UsuarioService usuarioService;
 
     @Autowired
-        LivroService livroService;
+        BancaService bancaService;
 
     List<Emprestimo> emprestimos = new ArrayList<>();
 
     public String registraEmprestimo(Map<String, Object> json) {
         Usuario usuario = usuarioService.usuarios.get((Integer) json.get("idUsuario"));
-        Livro livro = livroService.livros.get((Integer) json.get("idLivro"));
+        Banca banca = bancaService.banca.get((Integer) json.get("idBanca"));
         Emprestimo emprestimo = new Emprestimo();
 
         if (usuario.getQtdEmprestimo() >= 2) {
@@ -38,7 +39,7 @@ public class EmprestimoService {
             return "Existe pendências em seu cadastro. Faça a regularização com o financeiro.";
         } else {
             emprestimo.setUsuario(usuario);
-            emprestimo.setLivro(livro);
+            emprestimo.setLivro(banca);
             emprestimo.setDataEmprestimo(LocalDate.now());
             emprestimo.setVencimentoDevolucao(LocalDate.now().plusDays(10));
             emprestimo.setMultaPendente(false);
