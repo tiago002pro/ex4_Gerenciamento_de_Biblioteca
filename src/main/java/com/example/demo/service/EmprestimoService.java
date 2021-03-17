@@ -41,6 +41,7 @@ public class EmprestimoService {
             emprestimo.setUsuario(usuario);
             emprestimo.setLivro(banca);
             emprestimo.setDataEmprestimo(LocalDate.now());
+            //Emprestimo vence em 10 dias.
             emprestimo.setVencimentoDevolucao(LocalDate.now().plusDays(10));
             emprestimo.setMultaPendente(false);
 
@@ -92,7 +93,9 @@ public class EmprestimoService {
         Usuario usuario = usuarioService.usuarios.get((Integer) json.get("idUsuario"));
         Emprestimo emprestimo = emprestimos.get((Integer) json.get("idEmprestimo"));
 
-        emprestimo.setDiaDevolucao(LocalDate.now().plusDays(26));
+        //"plugDays" para testar o programa
+        //emprestimo.setDiaDevolucao(LocalDate.now().plusDays(26));
+        emprestimo.setDiaDevolucao(LocalDate.now());
         emprestimo.setDiasEmAtraso(calcDevolucao(emprestimo.getDiaDevolucao(), emprestimo.getVencimentoDevolucao()));
         emprestimo.setDevolucaoEmAtraso(verificaAtraso(emprestimo.getDiaDevolucao(), emprestimo.getVencimentoDevolucao()));
         emprestimo.setMultaAtrado(calMultaAtraso(emprestimo.getDiasEmAtraso()));
