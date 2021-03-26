@@ -15,7 +15,7 @@ public class UsuarioService {
     public String cadastraUsuario(Map<String, Object> json) {
         Usuario usuario = new Usuario();
 
-        usuario.setNome((String) json.get("nome"));
+        usuario.setNome((String) json.get("Nome"));
         usuario.setQtdEmprestimo(0);
         usuarios.add(usuario);
 

@@ -19,7 +19,7 @@ public class PeriodicoController {
     @Autowired
     PeriodicoService service;
 
-    @PostMapping("/periodico")
+    @PostMapping("/periodicos")
     public String cadastraPeriodico(@RequestBody Map<String, Object> json) {
         return this.service.cadastraPeriodico(json);
     }

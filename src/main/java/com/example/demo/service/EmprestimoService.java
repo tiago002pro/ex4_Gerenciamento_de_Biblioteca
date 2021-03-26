@@ -23,8 +23,8 @@ public class EmprestimoService {
 
     List<Emprestimo> emprestimos = new ArrayList<>();
 
-    public String registraEmprestimo(Map<String, Object> json) {
-        Usuario usuario = usuarioService.usuarios.get((Integer) json.get("idUsuario"));
+    public String registraEmprestimo(Integer idUsuario, Map<String, Object> json) {
+        Usuario usuario = usuarioService.usuarios.get(idUsuario);
         Banca banca = bancaService.banca.get((Integer) json.get("idBanca"));
         Emprestimo emprestimo = new Emprestimo();
 
@@ -89,8 +89,8 @@ public class EmprestimoService {
         return qtdEmprestimo +1;
     }
 
-    public String devolucaoEmprestimo(Map<String, Object> json) {
-        Usuario usuario = usuarioService.usuarios.get((Integer) json.get("idUsuario"));
+    public String devolucaoEmprestimo(Integer idUsuario, Map<String, Object> json) {
+        Usuario usuario = usuarioService.usuarios.get(idUsuario);
         Emprestimo emprestimo = emprestimos.get((Integer) json.get("idEmprestimo"));
 
         //"plugDays" para testar o programa

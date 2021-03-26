@@ -17,7 +17,7 @@ public class LivroController {
     @Autowired
         LivroService service;
 
-    @PostMapping("/livro")
+    @PostMapping("/livros")
     public String cadastraLivro(@RequestBody Map<String, Object> json) {
         return this.service.cadastraLivro(json);
     }

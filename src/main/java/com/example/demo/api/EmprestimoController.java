@@ -14,9 +14,9 @@ public class EmprestimoController {
     @Autowired
     EmprestimoService service;
 
-    @PostMapping("/emprestimo")
-    public String registraEmprestimo(@RequestBody Map<String, Object> json) {
-        return this.service.registraEmprestimo(json);
+    @PostMapping("/emprestimo/usuario/{id}")
+    public String registraEmprestimo(@PathVariable Integer id, @RequestBody Map<String, Object> json) {
+        return this.service.registraEmprestimo(id, json);
     }
 
     @GetMapping("/emprestimos")
@@ -24,9 +24,9 @@ public class EmprestimoController {
         return this.service.getEmprestimos();
     }
 
-    @PostMapping("/emprestimo/devolucao")
-    public String devolucao(@RequestBody Map<String, Object> json) {
-        return this.service.devolucaoEmprestimo(json);
+    @PostMapping("/emprestimo/devolucao/usuario/{id}")
+    public String devolucao(@PathVariable Integer id, @RequestBody Map<String, Object> json) {
+        return this.service.devolucaoEmprestimo(id, json);
     }
 
     @PostMapping("/emprestimo/devolucao/regularizacao")

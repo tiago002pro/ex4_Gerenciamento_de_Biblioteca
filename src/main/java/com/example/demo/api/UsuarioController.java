@@ -17,7 +17,7 @@ public class UsuarioController {
     @Autowired
     UsuarioService service;
 
-    @PostMapping("/usuario")
+    @PostMapping("/usuarios")
     public String cadastraUsuario(@RequestBody Map<String, Object> json) {
         return this.service.cadastraUsuario(json);
     }
